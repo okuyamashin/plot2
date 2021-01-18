@@ -72,7 +72,7 @@ public class SvgBuilder {
 		if(scale == null) return;
 		
 		for(ScaleLabel s:scale.getLabels()) {
-			
+			//
 		}
 	}
 	
