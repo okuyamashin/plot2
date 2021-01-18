@@ -1,12 +1,13 @@
 package jp.engawa.plot2.test;
 
-import java.awt.Color;
-import java.text.DecimalFormat;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import jp.engawa.plot2.model.Figure;
+import jp.engawa.plot2.model.IntLine;
+import jp.engawa.plot2.svg.SvgBuilder;
 
 public class Test01 {
 	public static void main(String[] args) throws Exception {
@@ -18,6 +19,15 @@ public class Test01 {
 		}
 		
 		Figure f = new Figure();
-		f.addLine("LINE0","売上","円",Figure.LEFT,Figure.LINE_TYPE_LINE,Color.BLUE,new DecimalFormat("#,##0"));
+		IntLine line0 = new IntLine("sales").sample();
+		f.add(line0);
+		
+		SvgBuilder builder = new SvgBuilder(f);
+		
+		FileOutputStream out = new FileOutputStream("/tmp/test01.svg");
+		builder.build(out);
+		out.flush();
+		out.close();
+		System.out.println("--");
 	}
 }

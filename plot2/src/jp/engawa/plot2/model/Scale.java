@@ -1,10 +1,12 @@
 package jp.engawa.plot2.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Scale {
 	public static void main(String[] args) throws Exception {
-		IntLine line = new IntLine();
+		IntLine line = new IntLine("sales");
 		Random r = new Random();
 		int rmax = r.nextInt(10000);
 		if(rmax < 0) {
@@ -19,7 +21,7 @@ public class Scale {
 		int size = line.size();
 		
 		Scale scale = new Scale();
-		scale.build(max);
+		scale.build(line);
 		
 		/*
 		for(int ii=0;ii<size;ii++) {
@@ -32,7 +34,12 @@ public class Scale {
 	protected double max = 0d;
 	protected double min = 0d;
 	
-	public void build(double max) {
+	protected List<ScaleLabel> labels = new ArrayList<ScaleLabel>();
+	protected ILine line;
+	
+	public void build(ILine line) {
+		this.labels = new ArrayList<ScaleLabel>();
+		double max = line.getMax();
 		if(max <= 0) {
 			return;
 		}
@@ -48,9 +55,14 @@ public class Scale {
 		}
 		
 		for(int ii=0;ii<=top_label;ii+=delta) {
-			System.out.println(ii);
+			ScaleLabel label = new ScaleLabel(ii, line);
+			this.labels.add(label);
 		}
 		this.max = top_label;
+		this.line = line;
+	}
+	public String label(double value) {
+		return line.label(value);
 	}
 	
 	public double pos(double value) {
@@ -68,5 +80,17 @@ public class Scale {
 		double rate = sa1 / sa0;
 		
 		return rate;
+	}
+	public List<ScaleLabel> getLabels() {
+		return labels;
+	}
+	public void setLabels(List<ScaleLabel> labels) {
+		this.labels = labels;
+	}
+	public ILine getLine() {
+		return line;
+	}
+	public void setLine(ILine line) {
+		this.line = line;
 	}
 }

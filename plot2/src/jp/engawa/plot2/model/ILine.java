@@ -5,5 +5,5 @@ public interface ILine {
 	
 	public int size();
 	
-	
+	public String label(double value);
 }
