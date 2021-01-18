@@ -72,7 +72,17 @@ public class SvgBuilder {
 		if(scale == null) return;
 		
 		for(ScaleLabel s:scale.getLabels()) {
+			double value = s.getValue();
+			String label = s.getLabel();
+			double pos = scale.pos(value);
+			
+			int x0 = x(0) - 2;
+			int x1 = x(0);
+			
+			int y = y(pos);
+			line(out,x0,y,x1,y,"#888888");
 			//
+			
 		}
 	}
 	
