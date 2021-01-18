@@ -71,7 +71,9 @@ public class SvgBuilder {
 		Scale scale = this.figure.getScale();
 		if(scale == null) return;
 		
-		
+		for(ScaleLabel s:scale.getLabels()) {
+			
+		}
 	}
 	
 	protected int x(double num) {
