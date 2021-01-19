@@ -1,7 +1,10 @@
 package jp.engawa.plot2.model;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -12,6 +15,7 @@ public class IntLine extends AbstractLine {
 	protected String label;
 	protected String unit;
 	protected List<Integer> data = new ArrayList<Integer>();
+	protected List<String> xlabels = new ArrayList<String>();
 	
 	public IntLine(String key) {
 		this.key = key;
@@ -20,9 +24,16 @@ public class IntLine extends AbstractLine {
 	public IntLine sample() {
 		Random r = new Random();
 		int max = (int)Math.pow(10d,r.nextInt(5)+1);
-		for(int ii=0;ii<10;ii++) {
+		int size = r.nextInt(10);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		SimpleDateFormat dformat = new SimpleDateFormat("yyyy/MM/dd");
+		
+		for(int ii=0;ii<size;ii++) {
 			int num = r.nextInt(max);
 			this.data.add(num);
+			this.xlabels.add(dformat.format(cal.getTime()));
+			cal.add(Calendar.DATE, +1);
 		}
 		return this;
 	}
@@ -53,5 +64,9 @@ public class IntLine extends AbstractLine {
 	public String label(double value) {
 		DecimalFormat deci = new DecimalFormat("#,##0");
 		return deci.format(value);
+	}
+	@Override
+	public String xlabel(int index) {
+		return this.xlabels.get(index);
 	}
 }

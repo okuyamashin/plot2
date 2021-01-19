@@ -22,6 +22,10 @@ public class SvgBuilder {
 	protected int bottom_margin = 100;
 	protected int right_margin = 100;
 	
+	protected int label_index_len = 3;
+	
+	protected IXLabel label = new DefaultLabel();
+	
 	public SvgBuilder(Figure figure) {
 		this.figure = figure;
 	}
@@ -44,6 +48,8 @@ public class SvgBuilder {
 		frame(writer);
 		
 		drawLeftScale(writer);
+		
+		drawXAxis(writer);
 		
 		writer.println("</svg>");
 		writer.flush();
@@ -76,14 +82,22 @@ public class SvgBuilder {
 			String label = s.getLabel();
 			double pos = scale.pos(value);
 			
-			int x0 = x(0) - 2;
+			int x0 = x(0) - label_index_len;
 			int x1 = x(0);
 			
 			int y = y(pos);
 			line(out,x0,y,x1,y,"#888888");
 			//
-			
+			String style = "stroke:#888888; text-anchor:end; font-size:10px;";
+			text(out,x0 - 2 ,y + 4,label,style);
 		}
+	}
+	
+	protected void drawXAxis(PrintWriter out) throws IOException {
+		ILine line = this.figure.getLine();
+		if(line == null) return;
+		
+		this.label.draw(this, out, line);
 	}
 	
 	protected int x(double num) {
@@ -118,7 +132,24 @@ public class SvgBuilder {
 		return ret;
 	}
 	
-	protected void line(PrintWriter out,int x0,int y0,int x1, int y1, String color) {
+	public static void text(PrintWriter out,int x,int y,String text,String style) {
+		out.print("<text ");
+		out.print(" x=\"");
+		out.print(x);
+		out.print("\" ");
+		out.print(" y=\"");
+		out.print(y);
+		out.print("\" ");
+		out.print(" style=\"");
+		out.print(style);
+		out.print("\" ");
+		out.print(">");
+		out.print(text);
+		out.println("</text>");
+		
+	}
+	
+	public static void line(PrintWriter out,int x0,int y0,int x1, int y1, String color) {
 		String style = "stroke: " + color + ";";
 		out.print("<line ");
 		out.print(" x1=\"");
@@ -139,7 +170,7 @@ public class SvgBuilder {
 		out.println(" />");
 	}
 	
-	protected void rect(PrintWriter out,int x,int y,int width,int height,String color) {
+	public static void rect(PrintWriter out,int x,int y,int width,int height,String color) {
 		String style = "fill:none; stroke: " + color + ";";
 		
 		out.print("<rect ");

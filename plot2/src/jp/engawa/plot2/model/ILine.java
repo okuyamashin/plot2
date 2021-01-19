@@ -6,4 +6,6 @@ public interface ILine {
 	public int size();
 	
 	public String label(double value);
+	
+	public String xlabel(int index);
 }
